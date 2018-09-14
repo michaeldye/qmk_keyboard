@@ -1,7 +1,7 @@
 #!/bin/bash
 
-export keyboard="${keyboard:=1up60rgb}"
-export keymap="${keymap:=mdye_custom_3}"
+export keyboard="${keyboard:=1upkeyboards/1up60rgb}"
+export keymap="${keymap:=mdye_custom_4}"
 
 cleanup() {
   err=$?
