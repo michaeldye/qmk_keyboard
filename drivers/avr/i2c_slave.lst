@@ -1,0 +1,290 @@
+   1               		.file	"i2c_slave.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.i2c_init,"ax",@progbits
+  11               	.global	i2c_init
+  13               	i2c_init:
+  14               	.LFB0:
+  15               		.file 1 "keyboards/dc01/right/../../../drivers/avr/i2c_slave.c"
+   1:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c **** /* Library made by: g4lvanix
+   2:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****  * Github repository: https://github.com/g4lvanix/I2C-slave-lib
+   3:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****  */
+   4:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c **** 
+   5:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c **** #include <avr/io.h>
+   6:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c **** #include <util/twi.h>
+   7:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c **** #include <avr/interrupt.h>
+   8:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c **** #include <stdbool.h>
+   9:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c **** 
+  10:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c **** #include "i2c_slave.h"
+  11:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c **** 
+  12:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c **** void i2c_init(uint8_t address){
+  16               		.loc 1 12 0
+  17               		.cfi_startproc
+  18               	.LVL0:
+  19               	/* prologue: function */
+  20               	/* frame size = 0 */
+  21               	/* stack size = 0 */
+  22               	.L__stack_usage = 0
+  13:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****     // load address into TWI address register
+  14:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****     TWAR = (address << 1);
+  23               		.loc 1 14 0
+  24 0000 880F      		lsl r24
+  25               	.LVL1:
+  26 0002 8093 BA00 		sts 186,r24
+  15:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****     // set the TWCR to enable address matching and enable TWI, clear TWINT, enable TWI interrupt
+  16:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****     TWCR = (1 << TWIE) | (1 << TWEA) | (1 << TWINT) | (1 << TWEN);
+  27               		.loc 1 16 0
+  28 0006 85EC      		ldi r24,lo8(-59)
+  29 0008 8093 BC00 		sts 188,r24
+  30 000c 0895      		ret
+  31               		.cfi_endproc
+  32               	.LFE0:
+  34               		.section	.text.i2c_stop,"ax",@progbits
+  35               	.global	i2c_stop
+  37               	i2c_stop:
+  38               	.LFB1:
+  17:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c **** }
+  18:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c **** 
+  19:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c **** void i2c_stop(void){
+  39               		.loc 1 19 0
+  40               		.cfi_startproc
+  41               	/* prologue: function */
+  42               	/* frame size = 0 */
+  43               	/* stack size = 0 */
+  44               	.L__stack_usage = 0
+  20:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****     // clear acknowledge and enable bits
+  21:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****     TWCR &= ~((1 << TWEA) | (1 << TWEN));
+  45               		.loc 1 21 0
+  46 0000 ECEB      		ldi r30,lo8(-68)
+  47 0002 F0E0      		ldi r31,0
+  48 0004 8081      		ld r24,Z
+  49 0006 8B7B      		andi r24,lo8(-69)
+  50 0008 8083      		st Z,r24
+  51 000a 0895      		ret
+  52               		.cfi_endproc
+  53               	.LFE1:
+  55               		.section	.text.__vector_36,"ax",@progbits
+  56               	.global	__vector_36
+  58               	__vector_36:
+  59               	.LFB2:
+  22:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c **** }
+  23:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c **** 
+  24:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c **** ISR(TWI_vect){
+  60               		.loc 1 24 0
+  61               		.cfi_startproc
+  62 0000 1F92      		push r1
+  63               	.LCFI0:
+  64               		.cfi_def_cfa_offset 3
+  65               		.cfi_offset 1, -2
+  66 0002 0F92      		push r0
+  67               	.LCFI1:
+  68               		.cfi_def_cfa_offset 4
+  69               		.cfi_offset 0, -3
+  70 0004 0FB6      		in r0,__SREG__
+  71 0006 0F92      		push r0
+  72 0008 1124      		clr __zero_reg__
+  73 000a 8F93      		push r24
+  74               	.LCFI2:
+  75               		.cfi_def_cfa_offset 5
+  76               		.cfi_offset 24, -4
+  77 000c 9F93      		push r25
+  78               	.LCFI3:
+  79               		.cfi_def_cfa_offset 6
+  80               		.cfi_offset 25, -5
+  81 000e EF93      		push r30
+  82               	.LCFI4:
+  83               		.cfi_def_cfa_offset 7
+  84               		.cfi_offset 30, -6
+  85 0010 FF93      		push r31
+  86               	.LCFI5:
+  87               		.cfi_def_cfa_offset 8
+  88               		.cfi_offset 31, -7
+  89               	/* prologue: Signal */
+  90               	/* frame size = 0 */
+  91               	/* stack size = 7 */
+  92               	.L__stack_usage = 7
+  93               	.LVL2:
+  25:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****     uint8_t ack = 1;
+  26:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****     // temporary stores the received data
+  27:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****     //uint8_t data;
+  28:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****     
+  29:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****     switch(TW_STATUS){
+  94               		.loc 1 29 0
+  95 0012 8091 B900 		lds r24,185
+  96 0016 887F      		andi r24,lo8(-8)
+  97 0018 8038      		cpi r24,lo8(-128)
+  98 001a 01F0      		breq .L5
+  99 001c 00F4      		brsh .L6
+ 100 001e 8823      		tst r24
+ 101 0020 01F0      		breq .L7
+ 102 0022 8036      		cpi r24,lo8(96)
+ 103 0024 01F4      		brne .L12
+  30:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****         case TW_SR_SLA_ACK:
+  31:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****             // The device is now a slave receiver
+  32:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****             slave_has_register_set = false;
+ 104               		.loc 1 32 0
+ 105 0026 1092 0000 		sts slave_has_register_set,__zero_reg__
+ 106 002a 00C0      		rjmp .L12
+ 107               	.L6:
+  29:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****         case TW_SR_SLA_ACK:
+ 108               		.loc 1 29 0
+ 109 002c 883A      		cpi r24,lo8(-88)
+ 110 002e 01F0      		breq .L9
+ 111 0030 883B      		cpi r24,lo8(-72)
+ 112 0032 01F0      		breq .L9
+ 113 0034 00C0      		rjmp .L12
+ 114               	.L5:
+  33:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****             break;
+  34:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c **** 
+  35:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****         case TW_SR_DATA_ACK:
+  36:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****             // This device is a slave receiver and has received data
+  37:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****             // First byte is the location then the bytes will be writen in buffer with auto-incrime
+  38:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****             if(!slave_has_register_set){
+ 115               		.loc 1 38 0
+ 116 0036 8091 0000 		lds r24,slave_has_register_set
+ 117 003a 8111      		cpse r24,__zero_reg__
+ 118 003c 00C0      		rjmp .L10
+  39:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****                 buffer_address = TWDR;
+ 119               		.loc 1 39 0
+ 120 003e 8091 BB00 		lds r24,187
+ 121 0042 8093 0000 		sts buffer_address,r24
+  40:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c **** 
+  41:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****                 if (buffer_address >= RX_BUFFER_SIZE){ // address out of bounds dont ack
+ 122               		.loc 1 41 0
+ 123 0046 8091 0000 		lds r24,buffer_address
+ 124 004a 8E31      		cpi r24,lo8(30)
+ 125 004c 00F0      		brlo .L13
+ 126               	.LVL3:
+  42:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****                     ack = 0;
+  43:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****                     buffer_address = 0;
+ 127               		.loc 1 43 0
+ 128 004e 1092 0000 		sts buffer_address,__zero_reg__
+  42:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****                     ack = 0;
+ 129               		.loc 1 42 0
+ 130 0052 80E0      		ldi r24,0
+ 131 0054 00C0      		rjmp .L11
+ 132               	.LVL4:
+ 133               	.L13:
+  25:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****     // temporary stores the received data
+ 134               		.loc 1 25 0
+ 135 0056 81E0      		ldi r24,lo8(1)
+ 136               	.LVL5:
+ 137               	.L11:
+  44:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****                 }
+  45:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****                 slave_has_register_set = true; // address has been receaved now fill in buffer
+ 138               		.loc 1 45 0
+ 139 0058 91E0      		ldi r25,lo8(1)
+ 140 005a 9093 0000 		sts slave_has_register_set,r25
+ 141 005e 00C0      		rjmp .L4
+ 142               	.LVL6:
+ 143               	.L10:
+  46:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****             } else {
+  47:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****                 rxbuffer[buffer_address] = TWDR;
+ 144               		.loc 1 47 0
+ 145 0060 E091 0000 		lds r30,buffer_address
+ 146 0064 F0E0      		ldi r31,0
+ 147 0066 8091 BB00 		lds r24,187
+ 148 006a E050      		subi r30,lo8(-(rxbuffer))
+ 149 006c F040      		sbci r31,hi8(-(rxbuffer))
+ 150 006e 8083      		st Z,r24
+ 151 0070 00C0      		rjmp .L20
+ 152               	.L9:
+  48:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****                 buffer_address++;
+  49:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****             }
+  50:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****             break;
+  51:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c **** 
+  52:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****         case TW_ST_SLA_ACK:
+  53:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****         case TW_ST_DATA_ACK:
+  54:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****             // This device is a slave transmitter and master has requested data
+  55:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****             TWDR = txbuffer[buffer_address];
+ 153               		.loc 1 55 0
+ 154 0072 E091 0000 		lds r30,buffer_address
+ 155 0076 F0E0      		ldi r31,0
+ 156 0078 E050      		subi r30,lo8(-(txbuffer))
+ 157 007a F040      		sbci r31,hi8(-(txbuffer))
+ 158 007c 8081      		ld r24,Z
+ 159 007e 8093 BB00 		sts 187,r24
+ 160               	.L20:
+  56:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****             buffer_address++;
+ 161               		.loc 1 56 0
+ 162 0082 8091 0000 		lds r24,buffer_address
+ 163 0086 8F5F      		subi r24,lo8(-(1))
+ 164 0088 8093 0000 		sts buffer_address,r24
+ 165 008c 00C0      		rjmp .L12
+ 166               	.L7:
+  57:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****             break;
+  58:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c **** 
+  59:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****         case TW_BUS_ERROR:
+  60:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****             // We got an error, reset i2c
+  61:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****             TWCR = 0;
+ 167               		.loc 1 61 0
+ 168 008e 1092 BC00 		sts 188,__zero_reg__
+ 169               	.L12:
+  25:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****     // temporary stores the received data
+ 170               		.loc 1 25 0
+ 171 0092 81E0      		ldi r24,lo8(1)
+ 172               	.LVL7:
+ 173               	.L4:
+  62:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****         default:
+  63:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****             break;
+  64:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****     }
+  65:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c **** 
+  66:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****     // Reset i2c state mahcine to be ready for next interrupt
+  67:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c ****     TWCR |= (1 << TWIE) | (1 << TWINT) | (ack << TWEA) | (1 << TWEN);
+ 174               		.loc 1 67 0
+ 175 0094 9091 BC00 		lds r25,188
+ 176 0098 9568      		ori r25,lo8(-123)
+ 177 009a 8295      		swap r24
+ 178               	.LVL8:
+ 179 009c 880F      		lsl r24
+ 180 009e 880F      		lsl r24
+ 181 00a0 807C      		andi r24,lo8(-64)
+ 182 00a2 892B      		or r24,r25
+ 183 00a4 8093 BC00 		sts 188,r24
+ 184               	/* epilogue start */
+  68:keyboards/dc01/right/../../../drivers/avr/i2c_slave.c **** }...
+ 185               		.loc 1 68 0
+ 186 00a8 FF91      		pop r31
+ 187 00aa EF91      		pop r30
+ 188 00ac 9F91      		pop r25
+ 189 00ae 8F91      		pop r24
+ 190 00b0 0F90      		pop r0
+ 191 00b2 0FBE      		out __SREG__,r0
+ 192 00b4 0F90      		pop r0
+ 193 00b6 1F90      		pop r1
+ 194 00b8 1895      		reti
+ 195               		.cfi_endproc
+ 196               	.LFE2:
+ 198               		.comm	rxbuffer,30,1
+ 199               		.comm	txbuffer,30,1
+ 200               		.section	.bss.slave_has_register_set,"aw",@nobits
+ 203               	slave_has_register_set:
+ 204 0000 00        		.zero	1
+ 205               		.comm	buffer_address,1,1
+ 206               		.text
+ 207               	.Letext0:
+ 208               		.file 2 "keyboards/dc01/right/../../../drivers/avr/i2c_slave.h"
+ 209               		.file 3 "/usr/lib/avr/include/stdint.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 i2c_slave.c
+     /tmp/cc8pOAP2.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cc8pOAP2.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cc8pOAP2.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cc8pOAP2.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cc8pOAP2.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cc8pOAP2.s:13     .text.i2c_init:0000000000000000 i2c_init
+     /tmp/cc8pOAP2.s:37     .text.i2c_stop:0000000000000000 i2c_stop
+     /tmp/cc8pOAP2.s:58     .text.__vector_36:0000000000000000 __vector_36
+     /tmp/cc8pOAP2.s:203    .bss.slave_has_register_set:0000000000000000 slave_has_register_set
+                            *COM*:0000000000000001 buffer_address
+                            *COM*:000000000000001e rxbuffer
+                            *COM*:000000000000001e txbuffer
+
+UNDEFINED SYMBOLS
+__do_clear_bss

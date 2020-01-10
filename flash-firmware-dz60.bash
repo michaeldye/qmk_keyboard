@@ -1,7 +1,8 @@
 #!/bin/bash
 
 export keyboard="${keyboard:=dz60}"
-export keymap="${keymap:=mdye_vim_arrow}"
+export keymap="${keymap:=60_ansi}"
+#export keymap="${keymap:=mdye_vim_arrow}"
 
 cleanup() {
   err=$?
